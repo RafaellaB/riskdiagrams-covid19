@@ -1,0 +1,81 @@
+{
+    "VARZEA": [
+        {
+            "date": "19/05/2022",
+            "time": "2:00",
+            "preciptation": 23.1,
+            "tide": 1.5
+            },
+            {
+                "date": "20/05/2022",
+                "time": "8:00",
+                "preciptation": 18.5,
+                "tide": 1
+            },
+            {
+                "date": "21/05/2022",
+                "time": "14:00",
+                "preciptation": 53,
+                "tide": 2
+            },
+            {
+                "date": "22/05/2022",
+                "time": "20:00",
+                "preciptation": 19.2,
+                "tide": 0.3
+            }
+        ],
+        "PINA": [
+            {
+                "date": "19/05/2022",
+                "time": "2:00",
+                "preciptation": 7.4,
+                "tide": 0.3
+                },
+                {
+                "date": "20/05/2022",
+                "time": "8:00",
+                 "preciptation": 14.8,
+                 "tide": 1.5
+                },
+                {
+                    "date": "21/05/2022",
+                    "time": "14:00",
+                    "preciptation": 2.1,
+                    "tide": 1
+                },
+                {
+                    "date": "22/05/2022",
+                    "time": "20:00",
+                    "preciptation": 28.5,
+                    "tide": 2
+                }
+            ],
+            "PORTO": [
+                {
+                    "date": "19/05/2022",
+                    "time": "2:00",
+                    "preciptation": 0,
+                    "tide": 0.9
+                    },
+                    {
+                        "date": "20/05/2022",
+                        "time": "8:00",
+                        "preciptation": 32.6,
+                        "tide": 1.5
+                    },
+                    {
+                        "date": "21/05/2022",
+                        "time": "14:00",
+                        "preciptation": 25.3,
+                        "tide": 1
+                    },
+                    {
+                        "date": "22/05/2022",
+                        "time": "20:00",
+                        "preciptation": 10.8,
+                        "tide": 2
+                    }
+                ]
+            
+}

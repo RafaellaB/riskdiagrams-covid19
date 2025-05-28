@@ -1,5 +1,5 @@
 from risk_diagrams import run_risk_diagrams
-import sys
+import os, sys
 import requests
 
 def ourworldindata(radio_valor):
@@ -30,15 +30,7 @@ def ourworldindata(radio_valor):
 if __name__ == "__main__":
 
     #radio_valor =  0 None | 1 last_days | 2 html 
-    radio_valor = 1
-    run_risk_diagrams('brasil_regions', 'False', None, None, radio_valor, None)
-    run_risk_diagrams('recife', 'False', None, None, radio_valor, None)
-    run_risk_diagrams('brasil', 'False', None, None, radio_valor, None)
-    ourworldindata(radio_valor)
-    radio_valor = 2
-    run_risk_diagrams('brasil_regions', 'False', None, None, radio_valor, None)
-    run_risk_diagrams('recife', 'False', None, None, radio_valor, None)
-    run_risk_diagrams('brasil', 'False', None, None, radio_valor, None)
-    ourworldindata(radio_valor)
-   
+    radio_valor = 0
+    run_risk_diagrams('rain', 'False', None, None, radio_valor, None)
+
     sys.exit()
