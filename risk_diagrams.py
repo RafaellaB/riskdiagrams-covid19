@@ -1,32 +1,18 @@
-import sys
 import pandas as pd
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
-from get_data_brasil import run_crear_excel_brasil
-from get_data_brasil_wcota import run_crear_excel_brasil_wcota
-from get_data_pernambuco import run_crear_excel_recife
-from get_data_ourworldindata import run_crear_excel_ourworldindata
-from pandas import ExcelWriter
 import colormap
-import plotly.graph_objects as go
-from PIL import Image
-import base64
-import os
 
 matplotlib.use('tkagg')
 
 
-def run_risk_diagrams(argv_1, deaths, file_others_cases, file_others_pop, radio_valor, ourworldindata_country):
+def run_risk_diagrams(argv_1, radio_valor):
 
     if argv_1:
         last_days_time = 30
-        brasil = False
-        pt = False
         html = False
         last_days = False
-        animation = False
 
         if radio_valor == 1:
             last_days = True
@@ -34,59 +20,39 @@ def run_risk_diagrams(argv_1, deaths, file_others_cases, file_others_pop, radio_
             html = True
         else:
             pass
-
-        dataTable = []
-        dataTable_EPG = []
-
-        if argv_1 == 'recife':
-            try:
-                run_crear_excel_recife()
-                filename = 'data/cases-recife.xlsx'
-                filename_population = 'data/pop_recife_v1.xlsx'
-                sheet_name = 'Cases'
-
-            except AttributeError:
-                print('Error! Not found file or could not download!')
         
-        elif argv_1 == 'rain':
+        if argv_1 == 'rain':
             try:
                 filename = 'data/rain.json'
             except AttributeError:
-                print('Error! Not found file or could not download!')
+                print('Error! File not found or could not download!')
 
         data = pd.read_json(filename)
     
         for ID in data.keys():
-            preciptation = np.zeros((len(data[ID])), dtype=np.float)
-            tide = np.zeros((len(data[ID])), dtype=np.float)
-            tim = np.zeros((len(data[ID])), dtype=np.str)
+            preciptation = np.zeros((len(data[ID])), dtype=float)
+            tide = np.zeros((len(data[ID])), dtype=float)
+            time = np.zeros((len(data[ID])), dtype=str)
             for i in range(len(data[ID])):
                 preciptation[i] = data[ID][i]['preciptation']
                 tide[i] = data[ID][i]['tide']
-                tim[i] = data[ID][i]['time']
+                time[i] = data[ID][i]['time']
 
             first_time = data[ID][0]['time']
             last_time = data[ID][len(data[ID]) - 1]['time']
             last_day = data[ID][len(data[ID]) - 1]['date']
-        
-            # For last 15 days
-            # if last_days:
-            #     a_14_days_solo = []
-            #     day13 = len(a_14_days) - last_days_time
-            #     first_day = dia[day13]
-            #     for i in range(len(a_14_days)):
-            #         if i >= len(a_14_days) - last_days_time:
-            #             a_14_days_solo.append(a_14_days[i])
-            #         else:
-            #             a_14_days_solo.append(None)
 
-            last_day =last_day.replace('/', '-')
+            last_day = last_day.replace('/', '-')
             save_path = 'static_graphic' + '/' + last_day + '-' + data[ID].name
-            save_path_temp = 'static_graphic' + '/interactive_graphic/' + last_day + '-' + data[ID].name
-            save_path_xlsx = 'static_graphic/xlsx/'
+            save_path_interactive = 'static_graphic' + '/interactive_graphic/' + last_day + '-' + data[ID].name
 
             fig1, ax1 = plt.subplots(sharex=True)
+            
+            # TODO: For last X days
             if last_days:
+                """
+                This model came from Covid risk diagram
+                """
                 # ax1.plot(a_14_days,  p_seven, 'ko--', fillstyle='none',
                 #          linewidth=0.5, color=(0, 0, 0, 0.15))
                 # ax1.plot(a_14_days_solo,  p_seven, 'ko--',
@@ -123,8 +89,6 @@ def run_risk_diagrams(argv_1, deaths, file_others_cases, file_others_pop, radio_
                                          connectionstyle="arc3", linewidth=0.4),
                          )
 
-           
-            # bra_title = data[ID]
             plt.title(data[ID].name)
             plt.annotate(
                 ' EPG > 50: High', xy=(len(x) - abs(len(x) / 3.5), 4.8), color=(0, 0, 0),
@@ -170,7 +134,11 @@ def run_risk_diagrams(argv_1, deaths, file_others_cases, file_others_pop, radio_
 
             ax1.set_aspect('auto')
 
+            # TODO: Work on thois for interactive graphics
             if html:
+                """
+                This model came from Covid risk diagram
+                """
                 # figt, axt = plt.subplots(sharex=True)
                 # axt.pcolorfast([0, int(lim[1])], [0, 4],
                 #                EPG, cmap=mycmap, alpha=0.6)
@@ -185,20 +153,3 @@ def run_risk_diagrams(argv_1, deaths, file_others_cases, file_others_pop, radio_
                 plt.close('all')
             print(
                 "\n\nPrediction for the region of " + data[ID].name + " performed successfully!\nPath:" + save_path)
-
-    
-
-            # dataTable.append([region[ID], cumulative_cases[len(cumulative_cases) - 1], new_cases[len(new_cases) - 1], p[len(p) - 1], p_seven[len(
-            #     p_seven) - 1], n_14_days[len(n_14_days) - 1], a_14_days[len(a_14_days) - 1], risk[len(risk) - 1], risk_per_10[len(risk_per_10) - 1]])
-
-            # for i in range(len(dia)):
-            #     dataTable_EPG.append([dia[i], region[ID], risk_per_10[i]])
-
-    # df = pd.DataFrame(dataTable, columns=['State', 'Cumulative cases', 'New cases', 'ρ', 'ρ7', 'New cases last 14 days (N14)',
-    #                                       'New cases last 14 days per 105 inhabitants (A14)', 'Risk (N14*ρ7)',  'Risk per 10^5 (A14*ρ7)'])
-    # df_EPG = pd.DataFrame(dataTable_EPG, columns=['DATE', 'CITY', 'EPG'])
-
-    # with ExcelWriter(save_path_xlsx + last_day + '_' + argv_1 + '_report.xlsx') as writer:
-    #     df.to_excel(writer, sheet_name='Alt_Urgell')
-    # with ExcelWriter(save_path_xlsx + last_day + '_' + argv_1 + '_report_EPG.xlsx') as writer:
-    #     df_EPG.to_excel(writer, sheet_name='Alt_Urgell')
